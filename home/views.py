@@ -9,10 +9,14 @@ from django.conf import settings
 from django.core.mail import send_mail
 import math
 import random
+from django.core.mail.message import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 # Create your views here.
 def temp(request):
-    return render(request,"home/temp.html", context={})
+    username='mayank'
+    return render(request,"home/main_email.html", context={'user_name': username})
 
 def contact(request):
     return render(request,"home/contactus.html", context={})
@@ -68,13 +72,28 @@ def dashboard(request):
         return render(request,"home/dashboard.html", context={'drafts' : my_draft,'permission':my_customer,'all_profiles':show_profile})    
     return render(request,"home/home.html", context={})    
 
+# def SENDMAIL(subject, message, email):
+#     try:
+#         email_from = settings.EMAIL_HOST_USER
+#         recipient_list = [email, ]
+#         send_mail( subject, message, email_from, recipient_list )
+#     except:
+#         return HttpResponse('Unable to send Email')
+
 def SENDMAIL(subject, message, email):
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email, ]
     try:
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [email, ]
-        send_mail( subject, message, email_from, recipient_list )
+        checker = User.objects.get(email=email)
     except:
-        return HttpResponse('Unable to send Email')
+        print('nhi mili bhai email')
+    username = checker.first_name
+    html_content = render_to_string("home/main_email.html",{'message': message, 'user_name': username})
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(subject,text_content,email_from,recipient_list)
+    email.mixed_subtype = 'related'
+    email.attach_alternative(html_content,"text/html")
+    email.send()
     
 def generate_code(length):
     digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
