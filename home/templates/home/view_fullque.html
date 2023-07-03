@@ -10,6 +10,7 @@
     <title>add-question-page</title>
 	<link rel="icon" href="{% static 'logo/Resource.png' %}" type="image/icon type">
 <link rel="stylesheet" type="text/css" href="{% static 'answer_post/style.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css'%}">
 <!-- Font Awesome -->
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -137,23 +138,28 @@
     </div>
   </header>
   <body>
+	
 	{% for message in messages %}
 		<div class="alert alert-secondary container" role="alert">
 		<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 		</div>
 	{% endfor %}
-	<div class="container">
-	<h2 class="mx-1 my-2">The Problem</h2>
-	{% for my_post in thispost %}
-	{% if my_post.thumbnail %}
-	<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-		<div class="carousel-inner">
-		  <div class="carousel-item active">
-			<img src="{{ my_post.thumbnail.url }}" class="d-block w-100" style="height:400px;" alt="...">
-		  </div>
+	
+	<main class="px-5">
+		<div class="container">
+		  <div class="row">
+			<div class="col">
+		<h2 class="mx-1 my-2">The Problem</h2>
+		{% for my_post in thispost %}
+		{% if my_post.thumbnail %}
+		<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+			<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="{{ my_post.thumbnail.url }}" class="d-block w-100" style="height:400px;" alt="...">
+			</div>
+			</div>
 		</div>
-	  </div>
-	{% endif %}
+		{% endif %}
 		<form class="questionaire">
 			<input type="hidden" name="Unique_id_answer" value="{{my_draft.id}}" readonly> 
 				<input type="hidden" name="Unique_id_answer" value="{{my_post.id}}" readonly> 
@@ -176,8 +182,33 @@
 			</form>
 		</div>  
 	{% endfor %}
-	
+	<div class="col col-lg-3">  <!--add profiles-->
+		<p class="fs-3 text-center fw-bolder">All Volunteers</p>
+		{% for show_profile in all_profiles %}    
+		  <div class="card mb-4 text-center">
+			<div class="card-body">
+			  <div class="mt-3 mb-4">
+				{% if show_profile.pic %}
+				  <img src="{{ show_profile.pic.url }}" class="rounded-circle img-fluid" style="width: 100px;" />
+				{% else %}
+				  <img src="{% static 'logo/signin.png' %}" class="rounded-circle img-fluid" style="width: 100px;" />
+				{% endif %}
+			  </div>
+			  <h5 class="card-title">{{ show_profile.full_name }}</h5>
+			  <p class="card-text">
+				<p class="designation"><b>Skills:-</b>  {{ show_profile.skills }}</p>
+				<p class="designation"><b>Experience:-</b>  {{ show_profile.experience }}</p>
+			  </p>
+			  <a class="btn btn-primary" href="mailto:{{all_volunteers.temp_email}}"><i class="fa fa-envelope"></i></a>
+			</div>
+		  </div>
+		{% endfor %}   
+	  </div>
+	</div>
+	</div>
+</main>
 </body>
+
 <!-- Footer -->
 	<!-- MDB -->
 	<footer class="text-center text-lg-start bg-light text-muted">

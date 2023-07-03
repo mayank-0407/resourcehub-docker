@@ -43,13 +43,14 @@
               <h1 class=" ls-tight text-dark">
                 Signin
               </h1>
-                <form action="./" method="POST" enctype="multipart/form-data">
+                <form action="./" method="POST" onsubmit ="return validate_password()" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h5 style="color: red; font-size:16px">
                     {% for message in messages %}
                         <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                     {% endfor %}
                 </h5>      
+                <p id="passcheckerror" style="font-size: 16px; color: #FF0000;"></p>
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                   <input type="email" name="email" for="email" id="form3Example3" class="form-control form-control-lg"
@@ -59,7 +60,7 @@
       
                 <!-- Password input -->
                 <div class="form-outline mb-3">
-                  <input type="password" name="pass1" for="pass1" id="form3Example4" class="form-control form-control-lg"
+                  <input type="password" name="pass1" for="pass1" id="pass1" class="form-control form-control-lg"
                     placeholder="Enter password" required/>
                   <label class="form-label" for="form3Example4">Password</label>
                 </div>
@@ -230,4 +231,5 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"
   </div>
   <!-- Copyright -->
 </footer>
+<script src="{% static 'check_pass.js' %}"></script> 
 </html>

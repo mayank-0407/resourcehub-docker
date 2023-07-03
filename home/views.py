@@ -372,7 +372,12 @@ def view_full_que(request,que_id):
     if request.user.is_authenticated: 
         my_post = Draft.objects.filter(pk=que_id)
         my_review = review.objects.filter(this_draft=my_post[0])
-        return render(request,"home/view_fullque.html", context={"thispost":my_post,"thisreview":my_review})
+        try:
+            my_type=userType.objects.get(code=settings.USER_VOLUNTEER_CODE)
+            show_profile=Customer.objects.filter(user_Type=my_type)
+        except:
+            print('unable to fetch profiles')
+        return render(request,"home/view_fullque.html", context={"thispost":my_post,"all_profiles":show_profile,"thisreview":my_review})
     return render(request,"home/home.html", context={})   
 
 def view_volunteers(request):

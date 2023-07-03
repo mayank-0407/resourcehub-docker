@@ -145,6 +145,7 @@
 				<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 		  	</div>
 		{% endfor %}
+		
       <form class="questionaire" action="{% url 'render_answer_post' que_id=1 %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 		<input type="hidden" name="Unique_id_answer" value="{{my_draft.id}}" readonly> 

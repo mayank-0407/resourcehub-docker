@@ -48,14 +48,15 @@
                 <h1 class=" ls-tight text-dark">
                   Create A New Account
                 </h1>
-                <form action="./" method="POST" enctype="multipart/form-data">
+                <form action="./" method="POST" onsubmit ="return validate_passwords()" enctype="multipart/form-data">
                   {% csrf_token %}
                   <!-- 2 column grid layout with text inputs for the first and last names -->
                   <h5 style="color: red; font-size:16px">
                     {% for message in messages %}
-                      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>hi{{ message }}</li>
+                      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                     {% endfor %}
                   </h5>
+                  <p id="passcheckerror" style="font-size: 16px; color: #FF0000;"></p>
                   <input type="hidden" name="Unique_id_answer" value="{{signupcode}}" readonly>
                   <div class="row">
                     <div class="col-md-6 mb-4">
@@ -80,13 +81,13 @@
   
                   <!-- Password input -->
                   <div class="form-outline mb-4">
-                    <input type="password" for="pass1" name="pass1"  id="password" class="form-control" required/>
+                    <input type="password" for="pass1" name="pass1"  id="pass1" class="form-control" required/>
                     <label class="form-label" for="pass1">Password</label>
                   </div>
 
                   <!-- C Password input -->
                   <div class="form-outline mb-4">
-                    <input type="password" for="confirm_pass" name="pass2"  id="password" class="form-control" required/>
+                    <input type="password" for="confirm_pass" name="pass2"  id="confirm_pass" class="form-control" required/>
                     <label class="form-label" for="confirm_pass">Password</label>
                   </div>
                   <!--account type-->
@@ -254,4 +255,5 @@
   </div>
   <!-- Copyright -->
 </footer>
+<script src="{% static 'check_pass.js' %}"></script>  
 </html>
